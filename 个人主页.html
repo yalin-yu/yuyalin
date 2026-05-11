@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>你的名字 — AI 研发工程师</title>
+<style>
+  /* ===== Reset & Base ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Helvetica Neue", sans-serif;
+    color: #1a1a2e;
+    background: #fafafa;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+
+  /* ===== Container ===== */
+  .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== Nav ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,250,250,.85); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+  nav .container { display: flex; align-items: center; justify-content: flex-end; height: 56px; gap: 32px; }
+  nav a { font-size: 14px; color: #555; transition: color .2s; }
+  nav a:hover { color: #1a1a2e; }
+
+  /* ===== Hero ===== */
+  .hero { padding: 140px 0 80px; }
+  .hero h1 { font-size: 42px; font-weight: 700; letter-spacing: -.02em; }
+  .hero .subtitle { font-size: 18px; color: #666; margin: 12px 0 24px; }
+  .hero .tagline { font-size: 15px; color: #888; max-width: 520px; line-height: 1.8; }
+  .hero .links { display: flex; gap: 20px; margin-top: 28px; }
+  .hero .links a {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; color: #3b6df0; transition: color .2s;
+  }
+  .hero .links a:hover { color: #1a4fcf; }
+  .hero .links svg { width: 18px; height: 18px; }
+
+  /* ===== Section ===== */
+  section { padding: 80px 0; }
+  section:nth-child(even) { background: #fff; }
+  .section-label {
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: .08em; color: #3b6df0; margin-bottom: 12px;
+  }
+  .section-title { font-size: 28px; font-weight: 700; margin-bottom: 40px; }
+
+  /* ===== Skills ===== */
+  .skill-group { margin-bottom: 36px; }
+  .skill-group h3 { font-size: 16px; font-weight: 600; margin-bottom: 14px; color: #333; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-tag {
+    display: inline-block; padding: 6px 16px;
+    background: #f0f3ff; color: #3b6df0;
+    border-radius: 20px; font-size: 13px; font-weight: 500;
+    transition: background .2s, transform .2s;
+  }
+  .skill-tag:hover { background: #e0e6ff; transform: translateY(-1px); }
+
+  /* ===== Projects ===== */
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 24px; }
+  .project-card {
+    background: #fff; border: 1px solid #eaeaea; border-radius: 12px;
+    padding: 28px; transition: box-shadow .25s, transform .25s;
+  }
+  .project-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,.08); transform: translateY(-2px); }
+  .project-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .project-card .meta { font-size: 13px; color: #888; margin-bottom: 12px; }
+  .project-card p { font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px; }
+  .project-card .tech-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .project-card .tech-stack span {
+    font-size: 11px; padding: 3px 10px;
+    background: #f5f5f5; color: #666; border-radius: 12px;
+  }
+  .project-card .card-links { margin-top: 16px; display: flex; gap: 16px; }
+  .project-card .card-links a { font-size: 13px; color: #3b6df0; }
+  .project-card .card-links a:hover { text-decoration: underline; }
+
+  /* ===== Timeline (Experience & Education) ===== */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 7px; top: 4px; bottom: 4px;
+    width: 2px; background: #e0e0e0;
+  }
+  .timeline-item { position: relative; margin-bottom: 36px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item::before {
+    content: ""; position: absolute; left: -25px; top: 6px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #3b6df0; border: 3px solid #fafafa;
+  }
+  .timeline-item .period { font-size: 13px; color: #3b6df0; font-weight: 600; margin-bottom: 4px; }
+  .timeline-item h3 { font-size: 17px; font-weight: 700; }
+  .timeline-item .org { font-size: 15px; color: #666; margin-bottom: 8px; }
+  .timeline-item .desc { font-size: 14px; color: #555; line-height: 1.7; }
+
+  /* ===== Contact ===== */
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .contact-card {
+    background: #fff; border: 1px solid #eaeaea; border-radius: 10px;
+    padding: 24px; display: flex; align-items: center; gap: 14px;
+    transition: box-shadow .2s;
+  }
+  .contact-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+  .contact-card .icon { width: 40px; height: 40px; border-radius: 10px; background: #f0f3ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .contact-card .icon svg { width: 20px; height: 20px; color: #3b6df0; }
+  .contact-card .info .label { font-size: 12px; color: #888; }
+  .contact-card .info .value { font-size: 14px; font-weight: 600; color: #333; }
+
+  /* ===== Footer ===== */
+  footer { padding: 40px 0; text-align: center; font-size: 13px; color: #aaa; border-top: 1px solid #eee; }
+
+  /* ===== Fade In Animation ===== */
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity .6s ease-out, transform .6s ease-out;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 640px) {
+    .hero { padding: 100px 0 60px; }
+    .hero h1 { font-size: 30px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    nav .container { justify-content: center; gap: 24px; }
+    .section-title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== Nav ===== -->
+<nav>
+  <div class="container">
+    <a href="#skills">能力</a>
+    <a href="#projects">项目</a>
+    <a href="#experience">经历</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <div class="container">
+    <h1>👋 你好，我是 <span style="color:#3b6df0;">你的名字</span></h1>
+    <p class="subtitle">AI 研发工程师 · 算法与工程双修</p>
+    <p class="tagline">
+      专注大模型应用与算法工程化，从研究到落地的全链路实践者。
+      目前在 [公司名称] 负责 [核心方向]，业余探索 AI 知识分享与个人 IP 建设。
+    </p>
+    <div class="links">
+      <a href="https://github.com/你的用户名" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        博客 / 公众号
+      </a>
+      <a href="mailto:your@email.com">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Email
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ===== Skills ===== -->
+<section id="skills">
+  <div class="container fade-in">
+    <p class="section-label">Skills</p>
+    <h2 class="section-title">技术能力</h2>
+
+    <div class="skill-group">
+      <h3>🤖 AI / 大模型</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">PyTorch</span>
+        <span class="skill-tag">Transformers</span>
+        <span class="skill-tag">LLM Fine-tuning</span>
+        <span class="skill-tag">RAG</span>
+        <span class="skill-tag">Agent</span>
+        <span class="skill-tag">Prompt Engineering</span>
+        <span class="skill-tag">LangChain</span>
+        <span class="skill-tag">向量数据库</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>⚙️ 工程 & 后端</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">FastAPI</span>
+        <span class="skill-tag">Docker</span>
+        <span class="skill-tag">Kubernetes</span>
+        <span class="skill-tag">PostgreSQL</span>
+        <span class="skill-tag">Redis</span>
+        <span class="skill-tag">Linux</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>🔬 算法基础</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">机器学习</span>
+        <span class="skill-tag">深度学习</span>
+        <span class="skill-tag">NLP</span>
+        <span class="skill-tag">推荐系统</span>
+        <span class="skill-tag">CV基础</span>
+        <span class="skill-tag">数据处理</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Projects ===== -->
+<section id="projects">
+  <div class="container fade-in">
+    <p class="section-label">Projects</p>
+    <h2 class="section-title">项目作品</h2>
+
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <h3>智能知识库问答系统</h3>
+        <p class="meta">个人项目 · 2025</p>
+        <p>基于 RAG 架构的企业级知识库问答系统，支持多文档格式解析、语义检索与多轮对话，实现了检索精度 92%+ 的实用效果。</p>
+        <div class="tech-stack">
+          <span>LangChain</span><span>ChromaDB</span><span>FastAPI</span><span>GPT-4</span>
+        </div>
+        <div class="card-links">
+          <a href="#" target="_blank" rel="noopener">🔗 在线 Demo</a>
+          <a href="#" target="_blank" rel="noopener">📂 GitHub</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>大模型微调实验平台</h3>
+        <p class="meta">个人项目 · 2025</p>
+        <p>一套用于快速实验 LLM 微调策略的工具平台，支持 LoRA/QLoRA，内置数据管理、训练监控与评估对比功能。</p>
+        <div class="tech-stack">
+          <span>PyTorch</span><span>HuggingFace</span><span>LoRA</span><span>Gradio</span>
+        </div>
+        <div class="card-links">
+          <a href="#" target="_blank" rel="noopener">📂 GitHub</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>算法推荐系统优化</h3>
+        <p class="meta">工作项目 · 2024</p>
+        <p>主导推荐系统召回与排序策略升级，引入多目标优化，线上核心指标提升 15%+，服务千万级用户。</p>
+        <div class="tech-stack">
+          <span>TensorFlow</span><span>Spark</span><span>Flink</span><span>A/B Testing</span>
+        </div>
+        <div class="card-links">
+          <a href="#" target="_blank" rel="noopener">📝 技术文章</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== Experience ===== -->
+<section id="experience">
+  <div class="container fade-in">
+    <p class="section-label">Experience</p>
+    <h2 class="section-title">学习 & 工作经历</h2>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <p class="period">2024 — 至今</p>
+        <h3>AI 算法工程师</h3>
+        <p class="org">[公司名称] · 全职</p>
+        <p class="desc">负责大模型应用落地与算法工程化，主导 RAG 系统、Agent 框架的搭建与优化。推动团队技术栈从传统 ML 向 LLM 转型。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="period">2022 — 2024</p>
+        <h3>算法工程师</h3>
+        <p class="org">[前公司名称] · 全职</p>
+        <p class="desc">从事推荐/搜索算法研发，负责召回、排序等核心模块，积累了大规模在线系统优化经验。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="period">2019 — 2022</p>
+        <h3>硕士 · [专业名称]</h3>
+        <p class="org">[大学名称]</p>
+        <p class="desc">研究方向：自然语言处理 / 机器学习。发表论文 X 篇，参与国家自然科学基金项目。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="period">2015 — 2019</p>
+        <h3>学士 · [专业名称]</h3>
+        <p class="org">[大学名称]</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== Contact ===== -->
+<section id="contact">
+  <div class="container fade-in">
+    <p class="section-label">Connect</p>
+    <h2 class="section-title">联系与合作</h2>
+
+    <div class="contact-grid">
+      <a href="mailto:your@email.com" class="contact-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="info"><p class="label">邮箱</p><p class="value">your@email.com</p></div>
+      </a>
+
+      <a href="https://github.com/你的用户名" target="_blank" rel="noopener" class="contact-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        </div>
+        <div class="info"><p class="label">GitHub</p><p class="value">github.com/你的用户名</p></div>
+      </a>
+
+      <a href="#" target="_blank" rel="noopener" class="contact-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 12h8M12 8l4 4-4 4"/></svg>
+        </div>
+        <div class="info"><p class="label">公众号 / 知识星球</p><p class="value">点击关注</p></div>
+      </a>
+
+      <a href="#" target="_blank" rel="noopener" class="contact-card">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <div class="info"><p class="label">知乎 / Twitter</p><p class="value">技术分享</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <div class="container">
+    <p>© 2026 你的名字 · Built with ❤️</p>
+  </div>
+</footer>
+
+<script>
+  // Scroll-triggered fade-in animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
