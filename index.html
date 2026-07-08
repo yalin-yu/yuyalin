@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>余雅霖 - AI Search / RAG / Agent 项目作品集</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", "Helvetica Neue", sans-serif;
+    color: #172033;
+    background: #f8fafc;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  ul { list-style: none; }
+  .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(248, 250, 252, .9); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(15, 23, 42, .08);
+  }
+  nav .container { display: flex; align-items: center; justify-content: flex-end; height: 56px; gap: 28px; }
+  nav a { font-size: 14px; color: #536174; transition: color .2s; }
+  nav a:hover { color: #0f4cc9; }
+
+  .hero { padding: 136px 0 72px; }
+  .hero-kicker { font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #0f4cc9; margin-bottom: 14px; }
+  .hero h1 { font-size: 42px; line-height: 1.18; font-weight: 760; max-width: 820px; }
+  .hero .subtitle { font-size: 18px; color: #536174; margin: 18px 0 20px; max-width: 760px; }
+  .hero .tagline { font-size: 15px; color: #66758a; max-width: 720px; }
+  .hero .links { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+  .button-link {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 38px; padding: 8px 15px;
+    border: 1px solid #c9d7f2; border-radius: 8px;
+    background: #ffffff; color: #0f4cc9; font-size: 14px; font-weight: 650;
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+  }
+  .button-link:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(15, 76, 201, .12); border-color: #92aee6; }
+  .button-link.primary { background: #0f4cc9; border-color: #0f4cc9; color: #fff; }
+
+  section { padding: 72px 0; }
+  section:nth-child(even) { background: #fff; }
+  .section-label {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: #0f4cc9; margin-bottom: 12px;
+  }
+  .section-title { font-size: 28px; line-height: 1.25; font-weight: 760; margin-bottom: 18px; }
+  .section-desc { color: #64748b; font-size: 15px; max-width: 720px; margin-bottom: 32px; }
+
+  .signal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 28px; }
+  .signal-card {
+    background: #fff; border: 1px solid #e3e8f2; border-radius: 8px;
+    padding: 18px;
+  }
+  .signal-card strong { display: block; font-size: 18px; color: #10213a; margin-bottom: 6px; }
+  .signal-card span { display: block; color: #64748b; font-size: 13px; line-height: 1.6; }
+
+  .skill-group { margin-bottom: 28px; }
+  .skill-group h3 { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #28354a; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill-tag {
+    display: inline-block; padding: 6px 14px;
+    background: #eef4ff; color: #0f4cc9;
+    border: 1px solid #d9e6ff; border-radius: 999px;
+    font-size: 13px; font-weight: 620;
+  }
+
+  .projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .project-card {
+    background: #fff; border: 1px solid #e3e8f2; border-radius: 8px;
+    padding: 24px; min-height: 100%;
+    transition: box-shadow .25s, transform .25s, border-color .25s;
+  }
+  .project-card:hover { box-shadow: 0 10px 28px rgba(15, 23, 42, .08); transform: translateY(-2px); border-color: #c8d6ee; }
+  .project-card h3 { font-size: 18px; line-height: 1.35; font-weight: 760; margin-bottom: 8px; }
+  .project-card .meta { font-size: 13px; color: #0f4cc9; font-weight: 650; margin-bottom: 12px; }
+  .project-card p { font-size: 14px; color: #536174; line-height: 1.75; margin-bottom: 14px; }
+  .project-card ul { display: grid; gap: 7px; margin: 14px 0 16px; }
+  .project-card li { position: relative; padding-left: 16px; font-size: 14px; color: #536174; }
+  .project-card li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #0f4cc9; position: absolute; left: 0; top: .72em; }
+  .tech-stack { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tech-stack span { font-size: 12px; padding: 3px 9px; background: #f1f5f9; color: #526277; border-radius: 999px; }
+  .project-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+  .project-links a {
+    display: inline-flex; align-items: center; min-height: 30px; padding: 5px 10px;
+    border: 1px solid #c9d7f2; border-radius: 7px;
+    color: #0f4cc9; background: #f8fbff; font-size: 13px; font-weight: 650;
+  }
+  .project-links a:hover { background: #eef4ff; border-color: #92aee6; }
+
+  .timeline { position: relative; padding-left: 26px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 7px; top: 4px; bottom: 4px;
+    width: 2px; background: #dbe4f0;
+  }
+  .timeline-item { position: relative; margin-bottom: 30px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item::before {
+    content: ""; position: absolute; left: -24px; top: 7px;
+    width: 12px; height: 12px; border-radius: 50%;
+    background: #0f4cc9; border: 3px solid #fff;
+  }
+  .timeline-item .period { font-size: 13px; color: #0f4cc9; font-weight: 700; margin-bottom: 4px; }
+  .timeline-item h3 { font-size: 17px; font-weight: 760; color: #1f2a3d; }
+  .timeline-item .org { font-size: 14px; color: #64748b; margin-bottom: 7px; }
+  .timeline-item .desc { font-size: 14px; color: #536174; }
+
+  .contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .contact-card {
+    background: #fff; border: 1px solid #e3e8f2; border-radius: 8px;
+    padding: 18px; transition: box-shadow .2s, transform .2s;
+  }
+  .contact-card:hover { box-shadow: 0 8px 22px rgba(15, 23, 42, .07); transform: translateY(-1px); }
+  .contact-card .label { font-size: 12px; color: #64748b; margin-bottom: 4px; }
+  .contact-card .value { font-size: 14px; font-weight: 700; color: #1f2a3d; overflow-wrap: anywhere; }
+
+  footer { padding: 34px 0; text-align: center; font-size: 13px; color: #94a3b8; border-top: 1px solid #e2e8f0; background: #fff; }
+  .fade-in { opacity: 0; transform: translateY(18px); transition: opacity .6s ease-out, transform .6s ease-out; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 780px) {
+    .hero { padding: 104px 0 56px; }
+    .hero h1 { font-size: 31px; }
+    nav .container { justify-content: center; gap: 18px; }
+    .signal-grid, .projects-grid, .contact-grid { grid-template-columns: 1fr; }
+    section { padding: 56px 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="#about">定位</a>
+    <a href="#projects">黑客松项目</a>
+    <a href="#skills">能力</a>
+    <a href="#experience">经历</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>
+
+<header class="hero" id="about">
+  <div class="container">
+    <p class="hero-kicker">Hackathon Portfolio / AI Search / RAG / Agent</p>
+    <h1>余雅霖：从推荐算法到 AI 应用工程，把检索、排序与评估能力带进 Agent 落地。</h1>
+    <p class="subtitle">
+      曾在快手从事短视频推荐算法，关注召回、精排、冷启、样本噪声、多目标建模与用户意图理解。
+      近期通过黑客松 MVP 与 RAG Eval 项目，探索 AI Search / Agent 应用的工程闭环。
+    </p>
+    <p class="tagline">
+      我不把黑客松作品包装成成熟产品，而是把它们视为快速验证想法、搭建原型、复盘 AI 应用链路的练习场。
+      当前重点是让 AI 应用具备可追溯证据、可评估指标、可复盘 trace 和清晰的业务边界。
+    </p>
+    <div class="links">
+      <a class="button-link primary" href="#projects">查看项目</a>
+      <a class="button-link" href="#contact">联系我</a>
+      <a class="button-link" href="mailto:lizzyyu522@gamil.com">lizzyyu522@gamil.com</a>
+    </div>
+    <div class="signal-grid">
+      <div class="signal-card">
+        <strong>5000+ 奖金</strong>
+        <span>多个黑客松/创意 MVP 项目累计获得奖金与荣誉，主要负责技术实现。</span>
+      </div>
+      <div class="signal-card">
+        <strong>RAG Eval MVP</strong>
+        <span>实现结构化事实、BM25 检索、引用校验、trace 与本地 eval 的可演示闭环。</span>
+      </div>
+      <div class="signal-card">
+        <strong>推荐算法背景</strong>
+        <span>将检索、排序、评估、冷启和反馈信号建模经验迁移到 AI Search / Agent。</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="projects">
+  <div class="container fade-in">
+    <p class="section-label">Projects</p>
+    <h2 class="section-title">黑客松与 AI 项目</h2>
+    <p class="section-desc">
+      这里保留项目的真实边界：黑客松项目以创意 MVP 和技术实现为主，RAG 项目以工程闭环和面试展示为主。
+    </p>
+
+    <div class="projects-grid">
+      <div class="project-card">
+        <h3>Gaokao RAG Eval MVP</h3>
+        <p class="meta">个人项目 · AI Search / RAG / LLM Eval</p>
+        <p>面向高考志愿咨询场景，构建结构化事实与文档证据结合的 RAG 评估系统，用来验证“回答是否有依据、证据是否可追溯、错误是否可复盘”。</p>
+        <ul>
+          <li>接入湖北高考一分一段、院校录取线、专业录取线、招生计划等结构化数据。</li>
+          <li>基于专业介绍 PDF 构建 BM25 文档检索，生成带 source、page、chunkId 的证据块。</li>
+          <li>实现 CitationChecker、trace 记录、本地 Eval Runner 与轻量 Demo API。</li>
+        </ul>
+        <div class="tech-stack">
+          <span>Python</span><span>SQLite</span><span>BM25</span><span>RAG Eval</span><span>Trace</span><span>Demo API</span>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>evomap 黑客松 MVP</h3>
+        <p class="meta">黑客松项目 · 技术实现</p>
+        <p>围绕创意场景快速搭建可演示 MVP，负责核心技术实现，将想法转化为可交互流程、演示页面或可运行原型。</p>
+        <ul>
+          <li>在短周期内完成需求拆解、功能取舍、原型开发和现场展示支持。</li>
+          <li>重点训练 AI 应用从 idea 到 demo 的快速闭环能力。</li>
+          <li>项目以比赛验证为主，不夸大为生产级上线系统。</li>
+        </ul>
+        <div class="tech-stack">
+          <span>Hackathon</span><span>MVP</span><span>Prototype</span><span>AI Application</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/rainnochen/EvoMate" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>天外家园黑客松 MVP</h3>
+        <p class="meta">黑客松项目 · 创意产品原型</p>
+        <p>参与创意型 AI 项目搭建，负责将项目概念拆成可实现模块，并在有限时间内完成主要交互链路与技术演示。</p>
+        <ul>
+          <li>负责技术实现与 Demo 可用性，优先保证核心路径能被评委理解。</li>
+          <li>关注用户任务、数据输入、模型能力调用和展示结果之间的闭环。</li>
+          <li>沉淀对 Agent / AI 应用中“场景边界”和“可解释输出”的理解。</li>
+        </ul>
+        <div class="tech-stack">
+          <span>AI MVP</span><span>Workflow</span><span>Demo</span><span>Product Thinking</span>
+        </div>
+        <div class="project-links">
+          <a href="https://lunar-home.streamlit.app/" target="_blank" rel="noopener">体验链接</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>清客松黑客松 MVP</h3>
+        <p class="meta">黑客松项目 · 奖金与荣誉</p>
+        <p>围绕 AI 数字人相关场景搭建黑客松 MVP，主要负责技术实现与体验链路打磨，让数字人概念能够通过可交互 Demo 被快速理解。</p>
+        <ul>
+          <li>把数字人创意需求快速收敛成可展示功能，处理原型中的交互、内容呈现和调用链路。</li>
+          <li>在团队协作中承担工程实现角色，支持项目从方案到演示的交付。</li>
+          <li>后续将比赛经验转化为更长期的 RAG / Agent 工程学习路径。</li>
+        </ul>
+        <div class="tech-stack">
+          <span>AI Avatar</span><span>Rapid Prototyping</span><span>Team Delivery</span><span>Pitch Demo</span>
+        </div>
+        <div class="project-links">
+          <a href="https://yalin-yu.github.io/hackerlink/" target="_blank" rel="noopener">体验链接</a>
+        </div>
+      </div>
+
+      <div class="project-card">
+        <h3>面向科研工作者的质性研究工具 MCP</h3>
+        <p class="meta">黑客松项目 · Research Tool / MCP</p>
+        <p>面向科研工作者的质性研究辅助工具，探索如何用 MCP 思路连接研究材料、分析流程和 AI 辅助能力，降低文本资料整理与归纳的操作成本。</p>
+        <ul>
+          <li>围绕访谈、文献、观察记录等质性材料，梳理研究者从资料导入到编码分析的关键流程。</li>
+          <li>以工具化方式承接 AI 辅助整理、提取、归类与复盘，强调可追溯和人工可校验。</li>
+          <li>作为黑客松 MVP 验证科研场景中的 Agent / MCP 工具协作可能性。</li>
+        </ul>
+        <div class="tech-stack">
+          <span>MCP</span><span>Research Tool</span><span>Qualitative Research</span><span>AI Workflow</span>
+        </div>
+        <div class="project-links">
+          <a href="https://github.com/yalin-yu/tx_heck" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container fade-in">
+    <p class="section-label">Skills</p>
+    <h2 class="section-title">能力标签</h2>
+    <p class="section-desc">定位不是“纯调 API”，而是把推荐算法里的检索、排序、评估和用户理解能力迁移到 AI 应用落地。</p>
+
+    <div class="skill-group">
+      <h3>AI Search / RAG / Agent</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">RAG Pipeline</span>
+        <span class="skill-tag">BM25 检索</span>
+        <span class="skill-tag">Citation Check</span>
+        <span class="skill-tag">Trace / Eval</span>
+        <span class="skill-tag">LangChain / LangGraph 学习中</span>
+        <span class="skill-tag">Prompt & Workflow</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>推荐算法迁移能力</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">召回 / 精排</span>
+        <span class="skill-tag">冷启优化</span>
+        <span class="skill-tag">用户意图建模</span>
+        <span class="skill-tag">多目标评估</span>
+        <span class="skill-tag">样本噪声治理</span>
+        <span class="skill-tag">A/B Testing</span>
+      </div>
+    </div>
+
+    <div class="skill-group">
+      <h3>工程实现</h3>
+      <div class="skill-tags">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">SQLite</span>
+        <span class="skill-tag">JSONL</span>
+        <span class="skill-tag">HTML / CSS</span>
+        <span class="skill-tag">Demo API</span>
+        <span class="skill-tag">测试与复盘</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="container fade-in">
+    <p class="section-label">Experience</p>
+    <h2 class="section-title">经历脉络</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <p class="period">2026.03 - 2026.06</p>
+        <h3>AI 项目与黑客松作品集建设</h3>
+        <p class="org">黑客松 MVP / RAG Eval / Agent 学习</p>
+        <p class="desc">参加 evomap、天外家园、清客松、质性研究工具 MCP 等项目，主要负责技术实现；同时搭建高考志愿 RAG Eval MVP，用工程化方式补齐 AI Search / Agent 转型证据。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="period">2024.07 - 2026.03</p>
+        <h3>推荐算法工程师</h3>
+        <p class="org">快手 · 策略算法部</p>
+        <p class="desc">参与短视频推荐召回、精排、冷启、样本噪声优化、多目标建模和场景建模，积累检索排序、指标评估和用户意图理解经验。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="period">2021.09 - 2024.06</p>
+        <h3>硕士 · 软件工程</h3>
+        <p class="org">东北大学</p>
+        <p class="desc">研究方向为推荐算法；IJCAI 2023 第一作者，关注用户行为建模、图表示学习与推荐系统。</p>
+      </div>
+
+      <div class="timeline-item">
+        <p class="period">2017.09 - 2021.09</p>
+        <h3>学士 · 计算机科学与技术</h3>
+        <p class="org">武汉理工大学</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container fade-in">
+    <p class="section-label">Connect</p>
+    <h2 class="section-title">联系与作品入口</h2>
+    <p class="section-desc">欢迎交流 AI Search、RAG Eval、Agent 应用工程、推荐算法迁移和黑客松项目合作。</p>
+
+    <div class="contact-grid">
+      <a href="mailto:lizzyyu522@gamil.com" class="contact-card">
+        <p class="label">邮箱</p>
+        <p class="value">lizzyyu522@gamil.com</p>
+      </a>
+      <a href="#" target="_blank" rel="noopener" class="contact-card">
+        <p class="label">GitHub / 项目仓库</p>
+        <p class="value">待补充</p>
+      </a>
+      <a href="#" target="_blank" rel="noopener" class="contact-card">
+        <p class="label">作品集链接</p>
+        <p class="value">当前页面</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 余雅霖 · AI Search / RAG / Agent Portfolio</p>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
